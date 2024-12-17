@@ -2,17 +2,21 @@
 using MediatR;
 using UltraGroupHotels.Application.Bookings.Common;
 using UltraGroupHotels.Domain.Bookings;
+using UltraGroupHotels.Infrastructure.Persistence.Repositories;
 
 namespace UltraGroupHotels.Application.Bookings.GetById
 {
     public sealed class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, ErrorOr<BookingResponse>>
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IGuestRepository _guestRepository;
 
-        public GetBookingByIdQueryHandler(IBookingRepository bookingRepository)
+        public GetBookingByIdQueryHandler(IBookingRepository bookingRepository, IGuestRepository guestRepository)
         {
             _bookingRepository = bookingRepository;
+            _guestRepository = guestRepository;
         }
+
 
         public async Task<ErrorOr<BookingResponse>> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
         {
@@ -23,8 +27,12 @@ namespace UltraGroupHotels.Application.Bookings.GetById
                 return Error.NotFound("Booking", "Booking not found");
             }
 
-            var bookingResponse = new BookingResponse(
-                                                      booking.Id, booking.UserId, 
+            var guests =  _guestRepository.GetGuestsByBookingId(booking.Id);
+
+
+            var bookingResponse = new BookingDetailsResponse(
+                                                      booking.Id, 
+                                                      booking.UserId, 
                                                       booking.RoomId, 
                                                       new DateRangeResponse(
                                                           booking.Duration.StartDate, 
@@ -39,7 +47,15 @@ namespace UltraGroupHotels.Application.Bookings.GetById
                                                       booking.StatusBooking.ToString(), 
                                                       new EmergencyContactReponse(
                                                           booking.EmergencyContact.FullName, 
-                                                          booking.EmergencyContact.PhoneNumber.Value));
+                                                          booking.EmergencyContact.PhoneNumber.Value),
+                                                      guests.Select(g => new GuestResponse(g.FirstName, 
+                                                                                           g.LastName, 
+                                                                                           g.DateOfBirth, 
+                                                                                           g.Gender.Value, 
+                                                                                           g.TypeDocument.Value, 
+                                                                                           g.DocumentNumber.Value, 
+                                                                                           g.Email, 
+                                                                                           g.PhoneNumber.Value)).ToList());
 
             return bookingResponse;
         }

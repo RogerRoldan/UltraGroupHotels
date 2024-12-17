@@ -1,8 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using UltraGroupHotels.Application.Users.Login;
 using UltraGroupHotels.Application.Users.Register;
+using UltraGroupHotels.WebAPI.Controllers.Authorization.Login;
+using UltraGroupHotels.WebAPI.Controllers.Authorization.Register;
+using UltraGroupHotels.WebAPI.Controllers.Common;
 
 namespace UltraGroupHotels.WebAPI.Controllers.Authorization;
 
@@ -19,8 +23,10 @@ public class AuthorizationController : ApiController
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginUserCommand command)
+    public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
+        var command = new LoginUserCommand(request.Email, request.Password);
+
         var result = await _mediator.Send(command);
 
         return result.Match(
@@ -28,10 +34,16 @@ public class AuthorizationController : ApiController
             errors => Problem(errors)
         );
     }
-
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterUserCommand command)
+    public async Task<IActionResult> Register([FromBody] RegisterUserRequest registerRequest)
     {
+        var command = new RegisterUserCommand(
+            registerRequest.FullName,
+            registerRequest.Email,
+            registerRequest.Password,
+            registerRequest.Role
+        );
+
         var result = await _mediator.Send(command);
 
         var jsonId = new { Id = result.Value };
@@ -41,6 +53,7 @@ public class AuthorizationController : ApiController
             errors => Problem(errors)
         );
     }
+
 
 
 

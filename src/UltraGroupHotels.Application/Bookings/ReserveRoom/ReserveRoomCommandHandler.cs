@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
+using UltraGroupHotels.Application.Implementations.Common.Email;
 using UltraGroupHotels.Domain.Bookings;
 using UltraGroupHotels.Domain.Guest;
 using UltraGroupHotels.Domain.Hotels;
@@ -19,6 +20,7 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
     private readonly IGuestRepository _guestRepository;
     private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEmailService _emailService;
 
     public ReserveRoomCommandHandler(
         IRoomRepository roomRepository,
@@ -26,7 +28,8 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         IBookingRepository bookingRepository,
         IGuestRepository guestRepository,
         IHotelRepository hotelRepository,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IEmailService emailService
         )
     {
         _roomRepository = roomRepository;
@@ -35,6 +38,7 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         _guestRepository = guestRepository;
         _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
+        _emailService = emailService;
     }
 
     public async Task<ErrorOr<Guid>> Handle(ReserveRoomCommand request, CancellationToken cancellationToken)
@@ -121,6 +125,23 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+        SendEmailBookingConfirmation(customer, hotel, room, booking);
+
         return booking.Id;
+    }
+
+    private void SendEmailBookingConfirmation(User customer, Hotel hotel, Room room, Booking booking)
+    {
+        string subject = $"Reservation Confirmation";
+
+        string bodyMessage = $"Dear {customer.FullName},\n\n" +
+                  $"Your reservation has been successfully confirmed at {hotel.Name}.\n\n" +
+                  $"Reservation Number: {booking.Id}\n" +
+                  $"Check-in Date: {booking.Duration.StartDate.ToShortDateString()}\n" +
+                  $"Check-out Date: {booking.Duration.EndDate.ToShortDateString()}\n" +
+                  $"Room Type: {room.RoomType.Value}\n\n" +
+                  $"Thank you for choosing {hotel.Name}. We look forward to welcoming you soon.";
+
+        _emailService.Send(customer.Email, subject, bodyMessage);
     }
 }

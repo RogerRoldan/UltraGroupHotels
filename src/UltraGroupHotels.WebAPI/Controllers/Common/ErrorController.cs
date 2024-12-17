@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace UltraGroupHotels.WebAPI.Controllers.Hotels
+namespace UltraGroupHotels.WebAPI.Controllers.Common
 {
     public class ErrorController : ControllerBase
     {

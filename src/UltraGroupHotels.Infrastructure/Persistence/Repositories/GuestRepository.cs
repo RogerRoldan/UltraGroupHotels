@@ -35,4 +35,11 @@ public class GuestRepository : IGuestRepository
         _context.Guests.AddRange(guests);
     }
 
+    public List<Guest> GetGuestsByBookingId(Guid bookingId)
+    {
+        var guests =  _context.Guests.Where(g => g.BookingId == bookingId).ToList();
+
+        return guests;
+    }
+
 }

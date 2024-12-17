@@ -24,12 +24,12 @@ public sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, 
 
         if (user is null)
         {
-            Error.NotFound("User.NotFound", "The user was not found");
+            return Error.NotFound("User.NotFound", "The user was not found");
         }
 
         if (!_hashingService.VerifyHash(user!.Password, request.Password))
         {
-            Error.Unauthorized("User.Unauthorized", "The password is incorrect");
+            return Error.Unauthorized("User.Unauthorized", "The password is incorrect");
         }
 
         string token = _jwtService.GenerateJwtToken(user);

@@ -12,7 +12,7 @@ public class HashingService : IHashingService
         var hashedBytes = SHA256.HashData(passwordBytes);
         return Convert.ToBase64String(hashedBytes);
     }
-    public bool VerifyHash(string password, string hashedPassword)
+    public bool VerifyHash(string hashedPassword, string password)
     {
         return HashPassword(password) == hashedPassword;
     }

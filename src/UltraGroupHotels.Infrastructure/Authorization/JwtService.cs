@@ -31,8 +31,11 @@ public class JwtService : IJwtService
                 new Claim(ClaimTypes.Role, user.Role.Value)
             }),
             Expires = DateTime.UtcNow.AddMinutes(_jwtOptions.AccessTokenExpiration),
+            Issuer = _jwtOptions.Issuer,
+            Audience = _jwtOptions.Audience, 
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
+
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);

@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
 using MediatR;
-using UltraGroupHotels.Domain.Rooms;
 
 namespace UltraGroupHotels.Application.Rooms.Create;
 

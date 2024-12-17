@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UltraGroupHotels.Application.Rooms.Create;
 using UltraGroupHotels.Application.Rooms.Delete;
 using UltraGroupHotels.Application.Rooms.GetAll;
 using UltraGroupHotels.Application.Rooms.Update;
+using UltraGroupHotels.WebAPI.Controllers.Common;
 
 namespace UltraGroupHotels.WebAPI.Controllers.Rooms;
 
@@ -29,20 +31,49 @@ public class RoomController : ApiController
         );
     }
 
+    [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Create(CreateRoomCommand command)
+    public async Task<IActionResult> Create(CreateRoomRequest request)
     {
+        var command = new CreateRoomCommand(
+            request.HotelId,
+            request.RoomNumber,
+            request.QuantityGuestsAdults,
+            request.QuantityGuestsChildren,
+            request.RoomType,
+            request.BaseCostAmount,
+            request.BaseCostCurrency,
+            request.Taxes,
+            request.IsActive
+        );
+
         var result = await _mediator.Send(command);
 
+        var json = new { Id = result.Value };
+
         return result.Match(
-            success => Ok(),
+            success => Created(nameof(Create), json),
             error => Problem(error)
         );
     }
 
+    [Authorize]
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateRoomCommand command)
+    public async Task<IActionResult> Update(UpdateRoomRequest request)
     {
+        var command = new UpdateRoomCommand(
+            request.Id,
+            request.HotelId,
+            request.RoomNumber,
+            request.QuantityGuestsAdults,
+            request.QuantityGuestsChildren,
+            request.RoomType,
+            request.BaseCostAmount,
+            request.BaseCostCurrency,
+            request.Taxes,
+            request.IsActive
+        );
+
         var result = await _mediator.Send(command);
 
         return result.Match(
@@ -51,6 +82,8 @@ public class RoomController : ApiController
         );
     }
 
+
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
