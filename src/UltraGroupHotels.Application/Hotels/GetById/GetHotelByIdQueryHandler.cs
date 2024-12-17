@@ -25,8 +25,16 @@ public sealed class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery
         }
 
         var hotelResponse = new HotelResponse(
-            hotel.Id, hotel.Name, hotel.Description,
-            new AddressResponse(hotel.Address.Country, hotel.Address.State, hotel.Address.City, hotel.Address.ZipCode, hotel.Address.Street), hotel.IsActive, hotel.PhoneNumber.Value
+                                              hotel.Id, hotel.Name, 
+                                              hotel.Description,
+                                                new AddressResponse(
+                                                    hotel.Address.Country, 
+                                                    hotel.Address.State, 
+                                                    hotel.Address.City, 
+                                                    hotel.Address.ZipCode, 
+                                                    hotel.Address.Street), 
+                                                hotel.IsActive, 
+                                                hotel.PhoneNumber.Value
         );
 
         return hotelResponse;

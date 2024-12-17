@@ -1,4 +1,4 @@
-﻿namespace UltraGroupHotels.Application.Hotels.Common.Authorization;
+﻿namespace UltraGroupHotels.Application.Users.Common.Authorization;
 
 public interface IHashingService
 {

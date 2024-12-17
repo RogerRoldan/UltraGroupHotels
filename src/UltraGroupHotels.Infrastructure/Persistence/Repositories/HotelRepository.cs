@@ -22,23 +22,23 @@ public class HotelRepository : IHotelRepository
         _context.Hotels.Remove(hotel);
     }
 
-    public Task<bool> ExistsAsync(Guid id)
+    public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var exists = _context.Hotels.AnyAsync(h => h.Id == id);
+        var exists = _context.Hotels.AnyAsync(h => h.Id == id, cancellationToken);
 
         return exists;
     }
 
-    public async Task<List<Hotel>> GetAllAsync()
+    public async Task<List<Hotel>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var hotels = await _context.Hotels.ToListAsync();
+        var hotels = await _context.Hotels.ToListAsync(cancellationToken);
 
         return hotels;
     }
 
-    public async Task<Hotel?> GetByIdAsync(Guid id)
+    public async Task<Hotel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id);
+        var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
 
 
         return hotel;

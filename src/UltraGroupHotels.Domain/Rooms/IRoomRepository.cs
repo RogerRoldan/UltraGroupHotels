@@ -2,9 +2,9 @@
 
 public interface IRoomRepository
 {
-    Task<List<Room>> GetAllAsync();
-    Task<Room?> GetByIdAsync(Guid id);
-    Task<bool> ExistsAsync(Guid id);
+    Task<List<Room>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<Room?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
     void Add(Room room);
     void Update(Room room);
     void Delete(Room room);

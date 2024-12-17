@@ -20,7 +20,7 @@ public sealed class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelComma
 
     public async Task<ErrorOr<Unit>> Handle(UpdateHotelCommand request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.ExistsAsync(request.Id);
+        var hotel = await _hotelRepository.ExistsAsync(request.Id, cancellationToken);
 
         if (!hotel) 
         {
@@ -37,7 +37,13 @@ public sealed class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelComma
             return Error.Validation("Hotel.Address", "Address is invalid");
         }
 
-        var updatedHotel = new Hotel(request.Id, request.Name, request.Description, address, request.IsActive, phoneNumber);
+        var updatedHotel = new Hotel(
+                                    request.Id, 
+                                    request.Name, 
+                                    request.Description, 
+                                    address, 
+                                    request.IsActive, 
+                                    phoneNumber);
 
         _hotelRepository.Update(updatedHotel);
 

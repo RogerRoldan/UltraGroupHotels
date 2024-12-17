@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using UltraGroupHotels.Domain.CommonValueObjects;
+using UltraGroupHotels.Domain.Rooms;
 
 namespace UltraGroupHotels.Application.Rooms.Create;
 

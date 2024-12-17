@@ -22,23 +22,23 @@ public class RoomRepository : IRoomRepository
         _context.Rooms.Remove(room);
     }
 
-    public Task<bool> ExistsAsync(Guid id)
+    public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var exists = _context.Rooms.AnyAsync(r => r.Id == id);
+        var exists = _context.Rooms.AnyAsync(r => r.Id == id, cancellationToken);
 
         return exists;
     }
 
-    public async Task<List<Room>> GetAllAsync()
+    public async Task<List<Room>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var rooms = await _context.Rooms.ToListAsync();
+        var rooms = await _context.Rooms.ToListAsync(cancellationToken);
 
         return rooms;
     }
 
-    public async Task<Room?> GetByIdAsync(Guid id)
+    public async Task<Room?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == id);
+        var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
 
         return room;
     }

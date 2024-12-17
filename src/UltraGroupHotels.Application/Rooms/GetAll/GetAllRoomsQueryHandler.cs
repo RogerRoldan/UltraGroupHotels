@@ -16,10 +16,20 @@ public sealed class GetAllRoomsQueryHandler : IRequestHandler<GetAllRoomsQuery, 
 
     public async Task<ErrorOr<IEnumerable<RoomResponse>>> Handle(GetAllRoomsQuery request, CancellationToken cancellationToken)
     {
-        var rooms = await _roomRepository.GetAllAsync();
+        var rooms = await _roomRepository.GetAllAsync(cancellationToken);
 
         var roomResponses = rooms.Select(room => new RoomResponse(
-            room.Id, room.HotelId, room.RoomNumber, room.QuantityGuests.Adults, room.QuantityGuests.Children, room.RoomType.ToString()!, room.BaseCost.Amount, room.BaseCost.Currency.Code, room.Taxes.Value, room.IsActive, room.CreatedAt)).ToList();
+                                                                  room.Id, 
+                                                                  room.HotelId, 
+                                                                  room.RoomNumber, 
+                                                                  room.QuantityGuests.Adults, 
+                                                                  room.QuantityGuests.Children, 
+                                                                  room.RoomType.Value, 
+                                                                  room.BaseCost.Amount, 
+                                                                  room.BaseCost.Currency.Code, 
+                                                                  room.Taxes.Value, 
+                                                                  room.IsActive, 
+                                                                  room.CreatedAt)).ToList();
 
         return roomResponses;
     }

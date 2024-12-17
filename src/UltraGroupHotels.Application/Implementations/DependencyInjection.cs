@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using MediatR;
-using UltraGroupHotels.Application.Hotels.Common.Behaviors;
+using UltraGroupHotels.Application.Implementations.Common.Behaviors;
 
 namespace UltraGroupHotels.Application.Implementations;
 

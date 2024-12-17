@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using UltraGroupHotels.Domain.SharedValueObjects;
 
 namespace UltraGroupHotels.Application.Hotels.Create;
 
@@ -38,7 +39,9 @@ public class CreateHotelCommandValidator : AbstractValidator<CreateHotelCommand>
 
         RuleFor(x => x.PhoneNumber)
             .NotEmpty().WithMessage("PhoneNumber is required")
-            .MaximumLength(100).WithMessage("PhoneNumber must not exceed 100 characters")
+            .MaximumLength(PhoneNumber.DefaultLength).WithMessage($"PhoneNumber must not exceed {PhoneNumber.DefaultLength} characters")
+            .Matches(PhoneNumber.Pattern).WithMessage("PhoneNumber must follow the international format starting with '+' and include 7 to 15 digits")
             .WithName("Phone Number");
+
     }
 }

@@ -18,10 +18,18 @@ public sealed class GetAllHotelsQueryHandler : IRequestHandler<GetAllHotelsQuery
     {
         var hotels = await _hotelRepository.GetAllAsync();
 
-        var hotelResponses = hotels.Select(hotel => new HotelResponse(
-            hotel.Id, hotel.Name, hotel.Description,
-            new AddressResponse(hotel.Address.Country, hotel.Address.State, hotel.Address.City, hotel.Address.ZipCode, hotel.Address.Street), hotel.IsActive, hotel.PhoneNumber.Value)
-        ).ToList();
+        var hotelResponses = hotels.Select(hotel => 
+                                                new HotelResponse(
+                                                                   hotel.Id, 
+                                                                   hotel.Name, 
+                                                                   hotel.Description,
+                                                                        new AddressResponse(hotel.Address.Country, 
+                                                                                            hotel.Address.State, 
+                                                                                            hotel.Address.City, 
+                                                                                            hotel.Address.ZipCode, 
+                                                                                            hotel.Address.Street), 
+                                                                   hotel.IsActive, 
+                                                                   hotel.PhoneNumber.Value)).ToList();
 
         return hotelResponses;
     }

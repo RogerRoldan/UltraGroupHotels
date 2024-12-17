@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using UltraGroupHotels.Application.Hotels.Common.Authorization;
+using UltraGroupHotels.Application.Users.Common.Authorization;
 using UltraGroupHotels.Domain.Users;
 
 namespace UltraGroupHotels.Infrastructure.Authorization;

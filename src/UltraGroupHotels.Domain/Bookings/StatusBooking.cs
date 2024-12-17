@@ -1,10 +1,10 @@
-﻿namespace UltraGroupHotels.Domain.Bookings
+﻿namespace UltraGroupHotels.Domain.Bookings;
+
+public enum StatusBooking
 {
-    public enum StatusBooking
-    {
-        Reserved,
-        Confirmed,
-        Canceled,
-        Completed
-    }
+    Reserved,
+    Confirmed,
+    Canceled,
+    Completed
 }
+

@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using UltraGroupHotels.Application.Bookings.GetAll;
 using UltraGroupHotels.Application.Bookings.GetById;
+using UltraGroupHotels.Application.Bookings.ReserveRoom;
 
 namespace UltraGroupHotels.WebAPI.Controllers.Bookings
 {
@@ -34,6 +36,18 @@ namespace UltraGroupHotels.WebAPI.Controllers.Bookings
 
             return result.Match(
                 booking => Ok(booking),
+                errors => Problem(errors)
+            );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBooking(ReserveRoomCommand command)
+        {
+            var result = await _sender.Send(command);
+
+            var jsonId = new { Id = result.Value };
+            return result.Match(
+                booking => Created(nameof(CreateBooking), jsonId),
                 errors => Problem(errors)
             );
         }

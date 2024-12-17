@@ -7,6 +7,7 @@ using UltraGroupHotels.Domain.Hotels;
 using UltraGroupHotels.Domain.Rooms;
 using UltraGroupHotels.Domain.Users;
 using UltraGroupHotels.Domain.Bookings;
+using UltraGroupHotels.Domain.Guest;
 
 namespace UltraGroupHotels.Infrastructure.Persistence;
 
@@ -15,9 +16,14 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext, IUnitOfWor
     private readonly IMediator _publisher;
 
     public DbSet<Hotel> Hotels { get; set; }
+
     public DbSet<Room> Rooms { get; set; }
+
     public DbSet<User> Users { get; set; }
+
     public DbSet<Booking> Booking { get; set; }
+
+    public DbSet<Guest> Guests { get; set; }
 
     public ApplicationDbContext(DbContextOptions options, IMediator publisher) : base(options)
     {

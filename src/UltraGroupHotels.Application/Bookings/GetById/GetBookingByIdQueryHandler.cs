@@ -24,7 +24,22 @@ namespace UltraGroupHotels.Application.Bookings.GetById
             }
 
             var bookingResponse = new BookingResponse(
-            booking.Id, booking.UserId, booking.RoomId, new DateRangeResponse(booking.Duration.StartDate, booking.Duration.EndDate, booking.Duration.Days), new PriceSummaryBookingResponse(booking.PriceDuration.Currency.ToString(), booking.PriceDuration.Amount, booking.TotalTaxes.Amount, booking.TotalPrice.Amount), booking.CreatedAt, booking.StatusBooking.ToString(), new EmergencyContactReponse(booking.EmergencyContact.FullName, booking.EmergencyContact.PhoneNumber.Value));
+                                                      booking.Id, booking.UserId, 
+                                                      booking.RoomId, 
+                                                      new DateRangeResponse(
+                                                          booking.Duration.StartDate, 
+                                                          booking.Duration.EndDate, 
+                                                          booking.Duration.Days), 
+                                                      new PriceSummaryBookingResponse(
+                                                          booking.PriceDuration.Currency.ToString(), 
+                                                          booking.PriceDuration.Amount, 
+                                                          booking.TotalTaxes.Amount, 
+                                                          booking.TotalPrice.Amount), 
+                                                      booking.CreatedAt, 
+                                                      booking.StatusBooking.ToString(), 
+                                                      new EmergencyContactReponse(
+                                                          booking.EmergencyContact.FullName, 
+                                                          booking.EmergencyContact.PhoneNumber.Value));
 
             return bookingResponse;
         }

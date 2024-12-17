@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UltraGroupHotels.Infrastructure.Persistence;
 
-namespace UltraGroupHotels.WebAPI.Extensions
+namespace UltraGroupHotels.WebAPI.Extensions;
+
+public static class MigrationExtension
 {
-    public static class MigrationExtension
+    public static void ApplyMigration(this WebApplication app)
     {
-        public static void ApplyMigration(this WebApplication app)
-        {
-            using var scope = app.Services.CreateScope();
+        using var scope = app.Services.CreateScope();
 
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            dbContext.Database.Migrate();
-        }
+        dbContext.Database.Migrate();
     }
 }

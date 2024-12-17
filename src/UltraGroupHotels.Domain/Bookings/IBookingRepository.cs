@@ -1,12 +1,11 @@
 ﻿using UltraGroupHotels.Domain.Rooms;
 
-namespace UltraGroupHotels.Domain.Bookings
+namespace UltraGroupHotels.Domain.Bookings;
+
+public interface IBookingRepository
 {
-    public interface IBookingRepository
-    {
-        Task<Booking?> GetBookingByIdAsync(Guid bookingId, CancellationToken cancellationToken = default);
-        Task<List<Booking>> GetAllBookingsAsync(CancellationToken cancellationToken = default);
-        void Add(Booking booking);
-        Task<bool> ExistsOverlappingReservationAsync(Room room, DateRange dateRange, CancellationToken cancellationToken = default);
-    }
+    Task<Booking?> GetBookingByIdAsync(Guid bookingId, CancellationToken cancellationToken = default);
+    Task<List<Booking>> GetAllBookingsAsync(CancellationToken cancellationToken = default);
+    void Add(Booking booking);
+    Task<bool> ExistsOverlappingReservationAsync(Room room, DateRange duration, CancellationToken cancellationToken = default);
 }

@@ -1,5 +1,4 @@
-﻿using System.Data.SqlTypes;
-using UltraGroupHotels.Domain.CommonValueObjects;
+﻿using UltraGroupHotels.Domain.CommonValueObjects;
 using UltraGroupHotels.Domain.Implementations;
 
 namespace UltraGroupHotels.Domain.Rooms;
@@ -16,7 +15,15 @@ public class Room : Entity
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Room(Guid Id,Guid hotelId, int roomNumber, QuantityGuests quantityGuests, RoomType roomType, Money baseCost, Taxes taxes, bool isActive, DateTime createdAt)
+    public Room(Guid Id,
+                Guid hotelId, 
+                int roomNumber, 
+                QuantityGuests quantityGuests, 
+                RoomType roomType, 
+                Money baseCost, 
+                Taxes taxes, 
+                bool isActive, 
+                DateTime createdAt)
     {
         Id = Guid.NewGuid();
         HotelId = hotelId;

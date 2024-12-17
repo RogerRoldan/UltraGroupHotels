@@ -33,9 +33,17 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Repositories
             _context.Booking.Add(booking);
         }
 
-        public Task<bool> ExistsOverlappingReservationAsync(Room room, DateRange dateRange, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistsOverlappingReservationAsync(Room room, DateRange duration, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            bool exists = await _context.Booking.AnyAsync(
+                booking =>
+                    booking.RoomId == room.Id &&
+                    booking.Duration.StartDate <= duration.EndDate &&
+                    booking.Duration.EndDate >= duration.StartDate &&
+                    StatusBookingsActive.StatusBookingActive.Contains(booking.StatusBooking),
+                cancellationToken);
+
+            return exists;
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using UltraGroupHotels.Application.Hotels.Common.Authorization;
+using UltraGroupHotels.Application.Users.Common.Authorization;
 using UltraGroupHotels.Domain.Users;
 
 namespace UltraGroupHotels.Application.Users.Login;
@@ -27,7 +27,7 @@ public sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, 
             Error.NotFound("User.NotFound", "The user was not found");
         }
 
-        if (_hashingService.VerifyHash(user!.Password, request.Password))
+        if (!_hashingService.VerifyHash(user!.Password, request.Password))
         {
             Error.Unauthorized("User.Unauthorized", "The password is incorrect");
         }

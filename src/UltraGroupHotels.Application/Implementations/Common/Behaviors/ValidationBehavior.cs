@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace UltraGroupHotels.Application.Hotels.Common.Behaviors;
+namespace UltraGroupHotels.Application.Implementations.Common.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 where TRequest : IRequest<TResponse>
@@ -16,9 +16,9 @@ where TResponse : IErrorOr
     }
 
     public async Task<TResponse> Handle(
-        TRequest request,
-        RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+                                        TRequest request,
+                                        RequestHandlerDelegate<TResponse> next,
+                                        CancellationToken cancellationToken)
     {
         if (_validator is null)
         {

@@ -14,8 +14,12 @@ public class Hotel : Entity
     public DateTime CreatedAt { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
 
-    public Hotel(Guid id, string name, 
-        string description, Address address, bool isActive, PhoneNumber phoneNumber)
+    public Hotel(Guid id, 
+                 string name, 
+                 string description, 
+                 Address address, 
+                 bool isActive, 
+                 PhoneNumber phoneNumber)
     {
         Id = id;
         Name = name;

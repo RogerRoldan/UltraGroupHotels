@@ -1,39 +1,27 @@
-﻿public class RoomType
+﻿namespace UltraGroupHotels.Domain.Rooms
 {
-    public string Value { get; }
-
-    private RoomType(string value)
+    public sealed partial record RoomType
     {
-        Value = value;
-    }
+        public string Value { get; private set; }
 
-    public static RoomType Create(string value) 
-    {
-        if (string.IsNullOrWhiteSpace(value))
+        private RoomType(string value)
         {
-            throw new ArgumentNullException(nameof(value));
+            Value = value;
         }
 
-        if (!Enum.TryParse<RoomTypeEnum>(value, true, out _))
+        public static RoomType Create(string value)
         {
-            throw new ArgumentException("Invalid room type", nameof(value));
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (!Enum.TryParse<RoomTypeEnum>(value, true, out _))
+            {
+                throw new ArgumentException("Invalid room type", nameof(value));
+            }
+
+            return new RoomType(value);
         }
-
-        return new RoomType(value);
-    }
-
-    public enum RoomTypeEnum
-    {
-        Single,
-        Double,
-        Triple,
-        Quad,
-        Queen,
-        King,
-        Twin,
-        Studio,
-        Suite,
-        MasterSuite,
-        PresidentialSuite
     }
 }

@@ -19,7 +19,11 @@ public sealed record Address
 
     public static Address? Create(string country, string state, string city, string zipCode, string street)
     {
-        if (string.IsNullOrWhiteSpace(country) || string.IsNullOrWhiteSpace(state) || string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(zipCode) || string.IsNullOrWhiteSpace(street))
+        if (string.IsNullOrWhiteSpace(country) || 
+            string.IsNullOrWhiteSpace(state) || 
+            string.IsNullOrWhiteSpace(city) || 
+            string.IsNullOrWhiteSpace(zipCode) || 
+            string.IsNullOrWhiteSpace(street))
         {
             return null;
         }

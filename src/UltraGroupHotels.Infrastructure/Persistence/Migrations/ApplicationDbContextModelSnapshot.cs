@@ -50,6 +50,60 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                     b.ToTable("Bookings", (string)null);
                 });
 
+            modelBuilder.Entity("UltraGroupHotels.Domain.Guest.Guest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("TypeDocument")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Guests", (string)null);
+                });
+
             modelBuilder.Entity("UltraGroupHotels.Domain.Hotels.Hotel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -272,6 +326,15 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("TotalTaxes")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UltraGroupHotels.Domain.Guest.Guest", b =>
+                {
+                    b.HasOne("UltraGroupHotels.Domain.Bookings.Booking", null)
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

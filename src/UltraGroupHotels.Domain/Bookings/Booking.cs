@@ -18,7 +18,16 @@ public class Booking : Entity
     public EmergencyContact EmergencyContact { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Booking(Guid userId, Guid roomId, DateRange duration, Taxes taxesPercentage, Money priceDuration, Money totalTaxes, Money totalPrice, EmergencyContact emergencyContact)
+    private Booking(
+                   Guid id,
+                   Guid userId,
+                   Guid roomId, 
+                   DateRange duration, 
+                   Taxes taxesPercentage, 
+                   Money priceDuration, 
+                   Money totalTaxes, 
+                   Money totalPrice, 
+                   EmergencyContact emergencyContact)
     {
         UserId = userId;
         RoomId = roomId;
@@ -32,11 +41,25 @@ public class Booking : Entity
         CreatedAt = DateTime.UtcNow;
     }
 
-    public Booking  MakeReservation(Room room, Guid userId, DateRange dateRange, EmergencyContact emergencyContact)
-    {
-        PriceSummaryBooking  priceSummaryBooking = PriceSummaryBookingService.CalculatePriceSummary(room, dateRange);
+    public static Booking MakeReservation(
+                                    Guid userId, 
+                                    Room room, 
+                                    DateRange duration, 
+                                    EmergencyContact emergencyContact)
 
-        var booking = new Booking(userId, room.Id, dateRange, room.Taxes, priceSummaryBooking.PriceDuration, priceSummaryBooking.TotalTaxes, priceSummaryBooking.TotalPrice, emergencyContact);
+    {
+        PriceSummaryBooking  priceSummaryBooking = PriceSummaryBookingService.CalculatePriceSummary(room, duration);
+
+        var booking = new Booking(
+                                  Guid.NewGuid(),
+                                  userId,
+                                  room.Id, 
+                                  duration, 
+                                  room.Taxes, 
+                                  priceSummaryBooking.PriceDuration, 
+                                  priceSummaryBooking.TotalTaxes, 
+                                  priceSummaryBooking.TotalPrice, 
+                                  emergencyContact);
 
         //booking.Raise(new BookingMakeReservationDomainEvent(booking.Id));
 

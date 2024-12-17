@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using UltraGroupHotels.Application.Hotels.Common.Authorization;
+using UltraGroupHotels.Application.Users.Common.Authorization;
 
 namespace UltraGroupHotels.Infrastructure.Authorization;
 
