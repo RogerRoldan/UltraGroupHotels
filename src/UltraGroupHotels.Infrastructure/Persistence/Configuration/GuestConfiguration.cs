@@ -56,8 +56,7 @@ public class GuestConfiguration : IEntityTypeConfiguration<Guest>
             .IsRequired();
 
         builder.HasIndex(g => g.Email)
-            .HasDatabaseName("IX_guests_email")
-            .IsUnique();
+            .HasDatabaseName("IX_guests_email");
 
         builder.Property(g => g.Email)
             .HasColumnName("email")
