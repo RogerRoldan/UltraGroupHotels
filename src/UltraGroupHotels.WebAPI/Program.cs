@@ -13,13 +13,13 @@ builder.Services.AddPresentation()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
 if (app.Environment.IsDevelopment())
 {
     app.ApplyMigration();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseExceptionHandler("/error");
 
