@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UltraGroupHotels.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using UltraGroupHotels.Infrastructure.Persistence;
 namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241217152742_RoomMigrationUpdateUnique")]
+    partial class RoomMigrationUpdateUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,97 +36,82 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                         .HasColumnName("created_at");
 
                     b.Property<Guid>("RoomId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("room_id");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("StatusBooking")
-                        .HasColumnType("integer")
-                        .HasColumnName("status_booking");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("TaxesPercentage")
                         .HasColumnType("decimal(5, 2)")
                         .HasColumnName("taxes_percentage");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("bookings", (string)null);
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("UltraGroupHotels.Domain.Guest.Guest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("BookingId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("booking_id");
+                        .HasColumnType("uuid");
 
                     b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date")
-                        .HasColumnName("date_of_birth");
+                        .HasColumnType("date");
 
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("document_number");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("email");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("first_name");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("gender");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("last_name");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("phone_number");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("TypeDocument")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("type_document");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("IX_guests_email");
+                        .IsUnique();
 
-                    b.ToTable("guests", (string)null);
+                    b.ToTable("Guests", (string)null);
                 });
 
             modelBuilder.Entity("UltraGroupHotels.Domain.Hotels.Hotel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -131,77 +119,63 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
-                        .HasColumnName("description");
+                        .HasColumnType("character varying(500)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("phone_number");
+                        .HasColumnType("character varying(20)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("hotels", (string)null);
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("UltraGroupHotels.Domain.Rooms.Room", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("HotelId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("hotel_id");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
+                        .HasColumnType("boolean");
 
                     b.Property<int>("RoomNumber")
-                        .HasColumnType("integer")
-                        .HasColumnName("room_number");
+                        .HasColumnType("integer");
 
                     b.Property<string>("RoomType")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("room_type");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Taxes")
-                        .HasColumnType("decimal(4, 2)")
-                        .HasColumnName("taxes");
+                        .HasColumnType("decimal(4, 2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelId", "RoomNumber")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Rooms_HotelId_RoomNumber");
+                    b.HasIndex("HotelId");
 
-                    b.ToTable("rooms", (string)null);
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("UltraGroupHotels.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -209,34 +183,29 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("email");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("full_name");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("password");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("role");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Users_Email");
+                        .IsUnique();
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("UltraGroupHotels.Domain.Bookings.Booking", b =>
@@ -247,17 +216,15 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric")
-                                .HasColumnName("price_duration_amount");
+                                .HasColumnType("numeric");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("price_duration_currency");
+                                .HasColumnType("text");
 
                             b1.HasKey("BookingId");
 
-                            b1.ToTable("bookings");
+                            b1.ToTable("Bookings");
 
                             b1.WithOwner()
                                 .HasForeignKey("BookingId");
@@ -269,17 +236,15 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric")
-                                .HasColumnName("total_price_amount");
+                                .HasColumnType("numeric");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("total_price_currency");
+                                .HasColumnType("text");
 
                             b1.HasKey("BookingId");
 
-                            b1.ToTable("bookings");
+                            b1.ToTable("Bookings");
 
                             b1.WithOwner()
                                 .HasForeignKey("BookingId");
@@ -291,17 +256,15 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric")
-                                .HasColumnName("total_taxes_amount");
+                                .HasColumnType("numeric");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("total_taxes_currency");
+                                .HasColumnType("text");
 
                             b1.HasKey("BookingId");
 
-                            b1.ToTable("bookings");
+                            b1.ToTable("Bookings");
 
                             b1.WithOwner()
                                 .HasForeignKey("BookingId");
@@ -322,7 +285,7 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
 
                             b1.HasKey("BookingId");
 
-                            b1.ToTable("bookings");
+                            b1.ToTable("Bookings");
 
                             b1.WithOwner()
                                 .HasForeignKey("BookingId");
@@ -347,7 +310,7 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
 
                             b1.HasKey("BookingId");
 
-                            b1.ToTable("bookings");
+                            b1.ToTable("Bookings");
 
                             b1.WithOwner()
                                 .HasForeignKey("BookingId");
@@ -388,35 +351,30 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                             b1.Property<string>("City")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("address_city");
+                                .HasColumnType("character varying(100)");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("address_country");
+                                .HasColumnType("character varying(100)");
 
                             b1.Property<string>("State")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("address_state");
+                                .HasColumnType("character varying(100)");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
                                 .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("address_street");
+                                .HasColumnType("character varying(100)");
 
                             b1.Property<string>("ZipCode")
                                 .HasMaxLength(10)
-                                .HasColumnType("character varying(10)")
-                                .HasColumnName("address_zip_code");
+                                .HasColumnType("character varying(10)");
 
                             b1.HasKey("HotelId");
 
-                            b1.ToTable("hotels");
+                            b1.ToTable("Hotels");
 
                             b1.WithOwner()
                                 .HasForeignKey("HotelId");
@@ -440,16 +398,14 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<int>("Adults")
-                                .HasColumnType("integer")
-                                .HasColumnName("quantity_guests_adults");
+                                .HasColumnType("integer");
 
                             b1.Property<int>("Children")
-                                .HasColumnType("integer")
-                                .HasColumnName("quantity_guests_children");
+                                .HasColumnType("integer");
 
                             b1.HasKey("RoomId");
 
-                            b1.ToTable("rooms");
+                            b1.ToTable("Rooms");
 
                             b1.WithOwner()
                                 .HasForeignKey("RoomId");
@@ -465,12 +421,11 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("base_cost_currency");
+                                .HasColumnType("text");
 
                             b1.HasKey("RoomId");
 
-                            b1.ToTable("rooms");
+                            b1.ToTable("Rooms");
 
                             b1.WithOwner()
                                 .HasForeignKey("RoomId");

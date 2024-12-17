@@ -8,6 +8,6 @@ public record RoomResponse(Guid Id,
                            string RoomType, 
                            decimal BaseCostAmount, 
                            string BaseCostCurrency, 
-                           decimal TaxesValue, 
+                           decimal Taxes, 
                            bool IsActive, 
                            DateTime CreatedAt);

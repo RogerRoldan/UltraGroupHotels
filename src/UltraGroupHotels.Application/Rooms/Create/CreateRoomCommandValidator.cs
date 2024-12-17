@@ -40,7 +40,6 @@ public class CreateRoomCommandValidator : AbstractValidator<CreateRoomCommand>
             .NotEmpty().WithMessage("IsActive is required");
     }
 
-    // Método auxiliar para validar que el valor pertenece al enum
     private bool BeAValidRoomType(string roomTypeValue)
     {
         return Enum.TryParse(typeof(RoomType.RoomTypeEnum), roomTypeValue, true, out _);

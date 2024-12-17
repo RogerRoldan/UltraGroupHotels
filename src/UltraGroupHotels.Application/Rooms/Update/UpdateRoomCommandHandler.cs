@@ -19,7 +19,7 @@ public sealed class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand
 
     public async Task<ErrorOr<Unit>> Handle(UpdateRoomCommand request, CancellationToken cancellationToken)
     {
-        var room = await _roomRepository.GetByIdAsync(request.Id);
+        var room = await _roomRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (room is null)
         {

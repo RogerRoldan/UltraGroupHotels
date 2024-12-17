@@ -23,9 +23,14 @@ public sealed class CreateRoomCommandHanlder : IRequestHandler<CreateRoomCommand
     public async Task<ErrorOr<Guid>> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
     {
 
-        if( await _hotelRepository.ExistsAsync(request.HotelId) is false)
+        if( await _hotelRepository.ExistsAsync(request.HotelId, cancellationToken) is false)
         {
             return Error.NotFound("Hotel", "Hotel not found");
+        }
+
+        if( await _roomRepository.ExistsByRoomNumberAndHotelIdAsync(request.RoomNumber, request.HotelId, cancellationToken) is true)
+        {
+            return Error.Conflict("Room", "Room number already exists in this hotel");
         }
 
         var room = new Room(

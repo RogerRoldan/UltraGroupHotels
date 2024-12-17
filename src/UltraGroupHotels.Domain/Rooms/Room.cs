@@ -15,7 +15,7 @@ public class Room : Entity
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Room(Guid Id,
+    public Room(Guid id,
                 Guid hotelId, 
                 int roomNumber, 
                 QuantityGuests quantityGuests, 
@@ -25,7 +25,7 @@ public class Room : Entity
                 bool isActive, 
                 DateTime createdAt)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         HotelId = hotelId;
         RoomNumber = roomNumber;
         QuantityGuests = quantityGuests;

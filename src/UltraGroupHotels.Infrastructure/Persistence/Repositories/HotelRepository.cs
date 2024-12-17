@@ -46,6 +46,13 @@ public class HotelRepository : IHotelRepository
 
     public void Update(Hotel hotel)
     {
+        var existingHotel = _context.Hotels.Find(hotel.Id);
+
+        if (existingHotel != null)
+        {
+            _context.Entry(existingHotel).State = EntityState.Detached;
+        }
+
         _context.Hotels.Update(hotel);
     }
 }

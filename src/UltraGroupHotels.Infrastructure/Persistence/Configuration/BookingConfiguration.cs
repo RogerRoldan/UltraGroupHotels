@@ -10,14 +10,15 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
 {
     public void Configure(EntityTypeBuilder<Booking> builder)
     {
-        builder.ToTable("Bookings");
+        builder.ToTable("bookings");
 
         builder.HasKey(b => b.Id);
-
         builder.Property(b => b.RoomId)
+            .HasColumnName("room_id")
             .IsRequired();
 
         builder.Property(b => b.UserId)
+            .HasColumnName("user_id")
             .IsRequired();
 
         builder.OwnsOne(b => b.Duration, d =>
@@ -41,9 +42,11 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.OwnsOne(b => b.TotalTaxes, t =>
         {
             t.Property(m => m.Amount)
+                .HasColumnName("total_taxes_amount")
                 .IsRequired();
 
             t.Property(m => m.Currency)
+                .HasColumnName("total_taxes_currency")
                 .HasConversion(
                     currency => currency.Code,
                     value => Currency.FromCode(value));
@@ -52,9 +55,11 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.OwnsOne(b => b.PriceDuration, p =>
         {
             p.Property(m => m.Amount)
+                .HasColumnName("price_duration_amount")
                 .IsRequired();
 
             p.Property(m => m.Currency)
+                .HasColumnName("price_duration_currency")
                 .HasConversion(
                     currency => currency.Code,
                     value => Currency.FromCode(value));
@@ -63,15 +68,18 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.OwnsOne(b => b.TotalPrice, p =>
         {
             p.Property(m => m.Amount)
+                .HasColumnName("total_price_amount")
                 .IsRequired();
 
             p.Property(m => m.Currency)
+                .HasColumnName("total_price_currency")
                 .HasConversion(
                     currency => currency.Code,
                     value => Currency.FromCode(value));
         });
 
         builder.Property(booking => booking.StatusBooking)
+            .HasColumnName("status_booking")
             .HasConversion<int>();
 
         builder.OwnsOne(b => b.EmergencyContact, e =>
@@ -86,9 +94,8 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
                 .HasMaxLength(20)
                 .IsRequired()
                 .HasConversion(
-                phoneNumber => phoneNumber.Value,
-                value => PhoneNumber.Create(value)!)
-                .HasMaxLength(20);
+                    phoneNumber => phoneNumber.Value,
+                    value => PhoneNumber.Create(value)!);
         });
 
         builder.Property(b => b.CreatedAt)

@@ -29,6 +29,13 @@ public class RoomRepository : IRoomRepository
         return exists;
     }
 
+    public Task<bool> ExistsByRoomNumberAndHotelIdAsync(int roomNumber, Guid hotelId, CancellationToken cancellationToken = default)
+    {
+        var exists = _context.Rooms.AnyAsync(r => r.RoomNumber == roomNumber && r.HotelId == hotelId, cancellationToken);
+
+        return exists;
+    }
+
     public async Task<List<Room>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var rooms = await _context.Rooms.ToListAsync(cancellationToken);
@@ -45,6 +52,13 @@ public class RoomRepository : IRoomRepository
 
     public void Update(Room room)
     {
+        var existingRoom = _context.Rooms.Find(room.Id);
+
+        if (existingRoom != null)
+        {
+            _context.Entry(existingRoom).State = EntityState.Detached;
+        }
+
         _context.Rooms.Update(room);
     }
 }
