@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UltraGroupHotels.Application.Implementations.Common.Email;
 using UltraGroupHotels.Application.Implementations.Data;
 using UltraGroupHotels.Application.Users.Common.Authorization;
 using UltraGroupHotels.Domain.Bookings;
@@ -10,6 +11,7 @@ using UltraGroupHotels.Domain.Implementations;
 using UltraGroupHotels.Domain.Rooms;
 using UltraGroupHotels.Domain.Users;
 using UltraGroupHotels.Infrastructure.Authorization;
+using UltraGroupHotels.Infrastructure.Email;
 using UltraGroupHotels.Infrastructure.Persistence;
 using UltraGroupHotels.Infrastructure.Persistence.Repositories;
 
@@ -21,6 +23,7 @@ public static class DependencyInjection
     {
         services.AddPersistence(configuration);
         services.AddAuthentication(configuration);
+        services.AddEmail(configuration);
 
         return services;
     }
@@ -51,6 +54,14 @@ public static class DependencyInjection
         services.AddScoped<IHashingService, HashingService>();
         services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+
+        return services;
+    }
+
+    public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IEmailService, EmailService>();
+        services.Configure<EmailOptions>(configuration.GetSection("SmtpEmail"));
 
         return services;
     }

@@ -10,6 +10,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/UltraGroupHotels.WebAPI/UltraGroupHotels.WebAPI.csproj", "src/UltraGroupHotels.WebAPI/"]
+COPY ["src/UltraGroupHotels.Application/UltraGroupHotels.Application.csproj", "src/UltraGroupHotels.Application/"]
+COPY ["src/UltraGroupHotels.Domain/UltraGroupHotels.Domain.csproj", "src/UltraGroupHotels.Domain/"]
+COPY ["src/UltraGroupHotels.Infrastructure/UltraGroupHotels.Infrastructure.csproj", "src/UltraGroupHotels.Infrastructure/"]
 RUN dotnet restore "./src/UltraGroupHotels.WebAPI/UltraGroupHotels.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/src/UltraGroupHotels.WebAPI"
