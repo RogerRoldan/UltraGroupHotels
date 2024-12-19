@@ -20,12 +20,12 @@ public sealed class GetAllBookingsQueryHandler : IRequestHandler<GetAllBookingsQ
 
         var bookingResponses = bookings.Select(booking => 
                                     new BookingResponse(
-                                                        booking.Id, booking.UserId, 
+                                                        booking.Id, booking.TitularGuest, 
                                                         booking.RoomId, 
                                                         new DateRangeResponse(booking.Duration.StartDate, 
                                                         booking.Duration.EndDate, booking.Duration.Days), 
                                                         new PriceSummaryBookingResponse(
-                                                            booking.PriceDuration.Currency.ToString(),
+                                                            booking.PriceDuration.Currency.Code,
                                                             booking.PriceDuration.Amount,booking.TotalTaxes.Amount, 
                                                             booking.TotalPrice.Amount),
                                                         booking.CreatedAt, 

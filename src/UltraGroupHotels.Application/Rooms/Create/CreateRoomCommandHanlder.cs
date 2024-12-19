@@ -37,7 +37,7 @@ public sealed class CreateRoomCommandHanlder : IRequestHandler<CreateRoomCommand
             Guid.NewGuid(),
             request.HotelId,
             request.RoomNumber,
-            new QuantityGuests(request.QuantityGuestsAdults, request.QuantityGuestsChildren),
+            request.QuantityGuests,
             RoomType.Create(request.RoomType),
             new Money(request.BaseCostAmount, Currency.FromCode(request.BaseCostCurrency)), 
             Taxes.FromValue(request.Taxes), request.IsActive, 

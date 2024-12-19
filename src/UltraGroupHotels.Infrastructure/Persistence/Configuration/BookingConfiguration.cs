@@ -17,8 +17,8 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .HasColumnName("room_id")
             .IsRequired();
 
-        builder.Property(b => b.UserId)
-            .HasColumnName("user_id")
+        builder.Property(b => b.TitularGuest)
+            .HasColumnName("titular_guest")
             .IsRequired();
 
         builder.OwnsOne(b => b.Duration, d =>

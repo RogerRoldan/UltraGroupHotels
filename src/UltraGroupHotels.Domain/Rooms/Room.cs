@@ -8,7 +8,7 @@ public class Room : Entity
     public Guid Id { get; private set; }
     public Guid HotelId { get; private set; }
     public int RoomNumber { get; private set; }
-    public QuantityGuests QuantityGuests { get; private set; }
+    public int QuantityGuests { get; private set; }
     public RoomType RoomType { get; private set; }
     public Money BaseCost { get; private set; }
     public Taxes Taxes { get; private set; }
@@ -18,7 +18,7 @@ public class Room : Entity
     public Room(Guid id,
                 Guid hotelId, 
                 int roomNumber, 
-                QuantityGuests quantityGuests, 
+                int quantityGuests, 
                 RoomType roomType, 
                 Money baseCost, 
                 Taxes taxes, 

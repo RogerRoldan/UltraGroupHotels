@@ -15,7 +15,7 @@ public class CreateRoomCommandValidator : AbstractValidator<CreateRoomCommand>
         RuleFor(x => x.RoomNumber)
             .NotEmpty().WithMessage("RoomNumber is required");
 
-        RuleFor(x => x.QuantityGuestsAdults)
+        RuleFor(x => x.QuantityGuests)
             .NotEmpty().WithMessage("QuantityGuests is required")
             .GreaterThan(0).WithMessage("QuantityGuests must be greater than 0");
 

@@ -61,7 +61,6 @@ namespace UltraGroupHotels.WebAPI.Controllers.Bookings
 
             var command = new ReserveRoomCommand(
                 request.RoomId,
-                request.CustomerId,
                 request.StartDate,
                 request.EndDate,
                 request.EmergencyContactFullName,

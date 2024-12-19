@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 using UltraGroupHotels.Application.Implementations.Common.Email;
+using UltraGroupHotels.Application.Users.Common.Authorization;
 using UltraGroupHotels.Domain.Bookings;
 using UltraGroupHotels.Domain.Guest;
 using UltraGroupHotels.Domain.Hotels;
@@ -21,6 +22,7 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
     private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailService _emailService;
+    private readonly IJwtService _jwtService;
 
     public ReserveRoomCommandHandler(
         IRoomRepository roomRepository,
@@ -29,7 +31,8 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         IGuestRepository guestRepository,
         IHotelRepository hotelRepository,
         IUnitOfWork unitOfWork,
-        IEmailService emailService
+        IEmailService emailService,
+        IJwtService jwtService
         )
     {
         _roomRepository = roomRepository;
@@ -39,6 +42,7 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
         _emailService = emailService;
+        _jwtService = jwtService;
     }
 
     public async Task<ErrorOr<Guid>> Handle(ReserveRoomCommand request, CancellationToken cancellationToken)
@@ -63,10 +67,10 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         {
             return Error.Validation(nameof(Room), "Room is not active");
         }
-        int maxiumumGuestsAllowed = room.QuantityGuests.Adults + room.QuantityGuests.Children;
-        if(request.Guests.Count > maxiumumGuestsAllowed)
+
+        if(request.Guests.Count > room.QuantityGuests)
         {
-            return Error.Validation("Booking", $"Room can only accommodate {maxiumumGuestsAllowed} guests");
+            return Error.Validation("Booking", $"Room can only accommodate {room.QuantityGuests} guests");
         }
 
 
@@ -81,11 +85,7 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         }
 
 
-        var customer = await _customerRepository.GetByIdAsync(request.CustomerId, cancellationToken);
-        if(customer is null)
-        {
-            return Error.NotFound(nameof(User), "Customer not found");
-        }
+        var titular = _jwtService.GetTokenInformation();
 
         if( await _bookingRepository.ExistsOverlappingReservationAsync(room, new DateRange(request.StartDate, request.EndDate), cancellationToken))
         {
@@ -99,7 +99,7 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
         }
 
         var booking = Booking.MakeReservation(
-            customer.Id,
+            titular.Id,
             room,
             new DateRange(
                 request.StartDate, 
@@ -125,16 +125,16 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        SendEmailBookingConfirmation(customer, hotel, room, booking);
+        SendEmailBookingConfirmation(titular, hotel, room, booking);
 
         return booking.Id;
     }
 
-    private void SendEmailBookingConfirmation(User customer, Hotel hotel, Room room, Booking booking)
+    private void SendEmailBookingConfirmation(TokenInformation titular, Hotel hotel, Room room, Booking booking)
     {
         string subject = $"Reservation Confirmation";
 
-        string bodyMessage = $"Dear {customer.FullName},\n\n" +
+        string bodyMessage = $"Dear {titular.FullName},\n\n" +
                   $"Your reservation has been successfully confirmed at {hotel.Name}.\n\n" +
                   $"Reservation Number: {booking.Id}\n" +
                   $"Check-in Date: {booking.Duration.StartDate.ToShortDateString()}\n" +
@@ -142,6 +142,6 @@ public sealed class ReserveRoomCommandHandler : IRequestHandler<ReserveRoomComma
                   $"Room Type: {room.RoomType.Value}\n\n" +
                   $"Thank you for choosing {hotel.Name}. We look forward to welcoming you soon.";
 
-        _emailService.Send(customer.Email, subject, bodyMessage);
+        _emailService.Send(titular.Email, subject, bodyMessage);
     }
 }

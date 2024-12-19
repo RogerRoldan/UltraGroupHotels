@@ -14,12 +14,9 @@ public class UpdateRoomCommandValidator : AbstractValidator<UpdateRoomCommand>
             .NotEmpty().WithMessage("RoomNumber is required")
             .GreaterThan(0).WithMessage("RoomNumber must be greater than 0");
 
-        RuleFor(x => x.QuantityGuestsAdults)
+        RuleFor(x => x.QuantityGuests)
             .NotEmpty().WithMessage("QuantityGuestsAdults is required")
             .GreaterThan(0).WithMessage("QuantityGuestsAdults must be greater than 0");
-
-        RuleFor(x => x.QuantityGuestsChildren)
-            .GreaterThanOrEqualTo(0).WithMessage("QuantityGuestsChildren cannot be negative");
 
         RuleFor(x => x.RoomType)
             .NotEmpty().WithMessage("RoomType is required.")

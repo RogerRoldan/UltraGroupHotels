@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UltraGroupHotels.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using UltraGroupHotels.Infrastructure.Persistence;
 namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241219032947_GuestMigrationBookingUpdate")]
+    partial class GuestMigrationBookingUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,10 +175,6 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
-
-                    b.Property<int>("QuantityGuests")
-                        .HasColumnType("integer")
-                        .HasColumnName("quantity_guests");
 
                     b.Property<int>("RoomNumber")
                         .HasColumnType("integer")
@@ -437,6 +436,27 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsOne("UltraGroupHotels.Domain.Rooms.QuantityGuests", "QuantityGuests", b1 =>
+                        {
+                            b1.Property<Guid>("RoomId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Adults")
+                                .HasColumnType("integer")
+                                .HasColumnName("quantity_guests_adults");
+
+                            b1.Property<int>("Children")
+                                .HasColumnType("integer")
+                                .HasColumnName("quantity_guests_children");
+
+                            b1.HasKey("RoomId");
+
+                            b1.ToTable("rooms");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RoomId");
+                        });
+
                     b.OwnsOne("UltraGroupHotels.Domain.CommonValueObjects.Money", "BaseCost", b1 =>
                         {
                             b1.Property<Guid>("RoomId")
@@ -459,6 +479,9 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Migrations
                         });
 
                     b.Navigation("BaseCost")
+                        .IsRequired();
+
+                    b.Navigation("QuantityGuests")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

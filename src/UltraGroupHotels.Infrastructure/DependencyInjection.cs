@@ -54,6 +54,7 @@ public static class DependencyInjection
         services.AddScoped<IHashingService, HashingService>();
         services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+        services.AddHttpContextAccessor();
 
         return services;
     }

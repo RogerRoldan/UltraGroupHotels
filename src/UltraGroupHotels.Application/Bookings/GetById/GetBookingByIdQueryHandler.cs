@@ -32,14 +32,14 @@ namespace UltraGroupHotels.Application.Bookings.GetById
 
             var bookingResponse = new BookingDetailsResponse(
                                                       booking.Id, 
-                                                      booking.UserId, 
+                                                      booking.TitularGuest, 
                                                       booking.RoomId, 
                                                       new DateRangeResponse(
                                                           booking.Duration.StartDate, 
                                                           booking.Duration.EndDate, 
                                                           booking.Duration.Days), 
                                                       new PriceSummaryBookingResponse(
-                                                          booking.PriceDuration.Currency.ToString(), 
+                                                          booking.PriceDuration.Currency.Code, 
                                                           booking.PriceDuration.Amount, 
                                                           booking.TotalTaxes.Amount, 
                                                           booking.TotalPrice.Amount), 

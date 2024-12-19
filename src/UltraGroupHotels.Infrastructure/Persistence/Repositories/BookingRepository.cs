@@ -46,5 +46,22 @@ namespace UltraGroupHotels.Infrastructure.Persistence.Repositories
             return exists;
         }
 
+        public async Task<List<Booking>> GetOverlappingReservationsAsync(DateRange duration, CancellationToken cancellationToken = default)
+        {
+
+            var bookings = await _context.Booking
+                .Where(booking =>
+
+                    (booking.Duration.StartDate >= duration.StartDate && booking.Duration.StartDate < duration.EndDate) ||
+                    (booking.Duration.EndDate > duration.StartDate && booking.Duration.EndDate <= duration.EndDate) ||
+                    (booking.Duration.StartDate <= duration.StartDate && booking.Duration.EndDate >= duration.EndDate) ||
+                    (booking.Duration.StartDate <= duration.StartDate && booking.Duration.EndDate >= duration.EndDate)
+
+                    && StatusBookingsActive.StatusBookingActive.Contains(booking.StatusBooking))
+                .ToListAsync(cancellationToken);
+
+            return bookings;
+        }
+
     }
 }

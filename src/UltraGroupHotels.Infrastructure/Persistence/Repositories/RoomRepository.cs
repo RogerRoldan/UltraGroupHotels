@@ -43,6 +43,13 @@ public class RoomRepository : IRoomRepository
         return rooms;
     }
 
+    public Task<List<Room>> GetRoomsByCapacityAsync(int numberOfGuests, CancellationToken cancellationToken = default)
+    {
+        var rooms = _context.Rooms.Where(r => r.QuantityGuests >= numberOfGuests).ToListAsync(cancellationToken);
+
+        return rooms;
+    }
+
     public async Task<Room?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == id, cancellationToken);

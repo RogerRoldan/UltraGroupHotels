@@ -7,7 +7,7 @@ namespace UltraGroupHotels.Domain.Bookings;
 public class Booking : Entity
 {
     public Guid Id { get; private set; }
-    public Guid UserId { get; private set; }
+    public Guid TitularGuest { get; private set; }
     public Guid RoomId { get; private set; }
     public DateRange Duration { get; private set; }
     public Taxes TaxesPercentage { get; private set; }
@@ -20,7 +20,7 @@ public class Booking : Entity
 
     private Booking(
                    Guid id,
-                   Guid userId,
+                   Guid titularGuest,
                    Guid roomId, 
                    DateRange duration, 
                    Taxes taxesPercentage, 
@@ -29,7 +29,8 @@ public class Booking : Entity
                    Money totalPrice, 
                    EmergencyContact emergencyContact)
     {
-        UserId = userId;
+        Id = id;    
+        TitularGuest = titularGuest;
         RoomId = roomId;
         Duration = duration;
         TaxesPercentage = taxesPercentage;
@@ -60,8 +61,6 @@ public class Booking : Entity
                                   priceSummaryBooking.TotalTaxes, 
                                   priceSummaryBooking.TotalPrice, 
                                   emergencyContact);
-
-        //booking.Raise(new BookingMakeReservationDomainEvent(booking.Id));
 
         return booking;
     }

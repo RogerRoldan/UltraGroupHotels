@@ -24,16 +24,9 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
             .HasColumnName("room_number")
             .IsRequired();
 
-        builder.OwnsOne(r => r.QuantityGuests, quantityGuestsBuilder =>
-        {
-            quantityGuestsBuilder.Property(qg => qg.Adults)
-                .HasColumnName("quantity_guests_adults")
-                .IsRequired();
-
-            quantityGuestsBuilder.Property(qg => qg.Children)
-                .HasColumnName("quantity_guests_children")
-                .IsRequired();
-        });
+        builder.Property(r => r.QuantityGuests)
+            .HasColumnName("quantity_guests")
+            .IsRequired();
 
         builder.Property(r => r.RoomType)
             .HasColumnName("room_type")

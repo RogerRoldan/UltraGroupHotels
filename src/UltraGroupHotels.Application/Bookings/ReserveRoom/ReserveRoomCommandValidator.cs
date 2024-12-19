@@ -10,9 +10,6 @@ public class ReserveRoomCommandValidator : AbstractValidator<ReserveRoomCommand>
         RuleFor(x => x.RoomId)
               .NotEmpty().WithMessage("RoomId is required.");
 
-        RuleFor(x => x.CustomerId)
-            .NotEmpty().WithMessage("CustomerId is required.");
-
         RuleFor(x => x.StartDate)
             .NotEmpty().WithMessage("StartDate is required.")
             .LessThan(x => x.EndDate).WithMessage("StartDate must be earlier than EndDate.");

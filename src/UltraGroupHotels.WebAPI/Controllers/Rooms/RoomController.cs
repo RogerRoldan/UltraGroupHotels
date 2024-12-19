@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using UltraGroupHotels.Application.Rooms.Create;
 using UltraGroupHotels.Application.Rooms.Delete;
 using UltraGroupHotels.Application.Rooms.GetAll;
+using UltraGroupHotels.Application.Rooms.GetAvailableRoomsForDatesAndGuests;
 using UltraGroupHotels.Application.Rooms.Update;
 using UltraGroupHotels.WebAPI.Controllers.Common;
 
@@ -38,8 +39,7 @@ public class RoomController : ApiController
         var command = new CreateRoomCommand(
             request.HotelId,
             request.RoomNumber,
-            request.QuantityGuestsAdults,
-            request.QuantityGuestsChildren,
+            request.QuantityGuests,
             request.RoomType,
             request.BaseCostAmount,
             request.BaseCostCurrency,
@@ -65,8 +65,7 @@ public class RoomController : ApiController
             request.Id,
             request.HotelId,
             request.RoomNumber,
-            request.QuantityGuestsAdults,
-            request.QuantityGuestsChildren,
+            request.QuantityGuests,
             request.RoomType,
             request.BaseCostAmount,
             request.BaseCostCurrency,
@@ -92,6 +91,24 @@ public class RoomController : ApiController
         return result.Match(
             success => Ok(),
             error => Problem(error)
+        );
+    }
+
+    [Authorize]
+    [HttpPost("available")]
+    public async Task<IActionResult> GetAvailableRooms(GetAvailableRoomsRequest request)
+    {
+        var command = new GetAvailableRoomsForDatesAndGuestsQuery(
+            request.StartDate,
+            request.EndDate,
+            request.NumberOfGuests
+        );
+
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            rooms => Ok(rooms),
+            errors => Problem(errors)
         );
     }
 }

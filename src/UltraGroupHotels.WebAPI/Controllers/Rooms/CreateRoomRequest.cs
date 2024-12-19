@@ -3,8 +3,7 @@
 public record CreateRoomRequest(
     Guid HotelId,
     int RoomNumber,
-    int QuantityGuestsAdults,
-    int QuantityGuestsChildren,
+    int QuantityGuests,
     string RoomType,
     decimal BaseCostAmount,
     string BaseCostCurrency,
