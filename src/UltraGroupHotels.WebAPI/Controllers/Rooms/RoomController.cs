@@ -10,6 +10,7 @@ using UltraGroupHotels.WebAPI.Controllers.Common;
 
 namespace UltraGroupHotels.WebAPI.Controllers.Rooms;
 
+[Authorize]
 [ApiController]
 [Route("api/rooms")]
 public class RoomController : ApiController
@@ -32,7 +33,7 @@ public class RoomController : ApiController
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateRoomRequest request)
     {
@@ -57,7 +58,7 @@ public class RoomController : ApiController
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async Task<IActionResult> Update(UpdateRoomRequest request)
     {
@@ -82,7 +83,7 @@ public class RoomController : ApiController
     }
 
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {

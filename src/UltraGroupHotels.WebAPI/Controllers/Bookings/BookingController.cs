@@ -10,6 +10,7 @@ using UltraGroupHotels.WebAPI.Controllers.Common;
 namespace UltraGroupHotels.WebAPI.Controllers.Bookings
 {
     [ApiController]
+    [Authorize]
     [Route("api/bookings")]
     public class BookingController : ApiController
     {
@@ -20,7 +21,7 @@ namespace UltraGroupHotels.WebAPI.Controllers.Bookings
             _sender = sender ?? throw new ArgumentNullException(nameof(sender));
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllBookings()
         {
@@ -32,7 +33,6 @@ namespace UltraGroupHotels.WebAPI.Controllers.Bookings
             );
         }
 
-        [Authorize]
         [HttpGet("details/{id}")]
         public async Task<IActionResult> GetBookingById(Guid id)
         {

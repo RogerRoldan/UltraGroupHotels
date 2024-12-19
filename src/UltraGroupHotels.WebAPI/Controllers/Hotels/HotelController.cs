@@ -12,6 +12,7 @@ namespace UltraGroupHotels.WebAPI.Controllers.Hotels;
 
 
 [ApiController]
+[Authorize]
 [Route("api/hotels")]
 public class HotelController : ApiController
 {
@@ -44,7 +45,7 @@ public class HotelController : ApiController
         );
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateHotel(CreateHotelRequest request)
     {
@@ -71,7 +72,7 @@ public class HotelController : ApiController
     }
 
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async Task<IActionResult> UpdateHotel(UpdateHotelRequest request)
     {
@@ -97,7 +98,7 @@ public class HotelController : ApiController
     }
 
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHotel(Guid id)
     {
