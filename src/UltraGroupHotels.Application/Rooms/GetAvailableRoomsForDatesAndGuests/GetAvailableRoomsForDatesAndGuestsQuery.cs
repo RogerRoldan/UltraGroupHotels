@@ -6,4 +6,6 @@ namespace UltraGroupHotels.Application.Rooms.GetAvailableRoomsForDatesAndGuests;
 
 public record GetAvailableRoomsForDatesAndGuestsQuery(DateOnly StartDate,
                                                       DateOnly EndDate,
-                                                      int NumberOfGuests) :                                                                          IRequest<ErrorOr<List<RoomResponse>>>;
+                                                      int NumberOfGuests,
+                                                      string City) :                                                                          IRequest<ErrorOr<List<RoomResponse>>>;
+

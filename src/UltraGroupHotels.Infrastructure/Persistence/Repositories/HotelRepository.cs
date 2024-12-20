@@ -40,8 +40,14 @@ public class HotelRepository : IHotelRepository
     {
         var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
 
-
         return hotel;
+    }
+
+    public Task<List<Hotel>> GetHotelByCityAsync(string city, CancellationToken cancellationToken = default)
+    {
+        var hotels = _context.Hotels.Where(h => h.Address.City == city).ToListAsync(cancellationToken);
+
+        return hotels;
     }
 
     public void Update(Hotel hotel)

@@ -102,7 +102,8 @@ public class RoomController : ApiController
         var command = new GetAvailableRoomsForDatesAndGuestsQuery(
             request.StartDate,
             request.EndDate,
-            request.NumberOfGuests
+            request.NumberOfGuests,
+            request.City
         );
 
         var result = await _mediator.Send(command);

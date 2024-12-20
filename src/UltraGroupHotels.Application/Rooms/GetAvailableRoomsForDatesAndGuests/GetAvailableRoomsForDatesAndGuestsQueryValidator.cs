@@ -13,5 +13,10 @@ public class GetAvailableRoomsForDatesAndGuestsQueryValidator : AbstractValidato
         RuleFor(x => x.NumberOfGuests)
             .GreaterThan(0)
             .WithMessage("The number of guests must be greater than 0.");
+
+        RuleFor(x => x.City)
+            .NotEmpty()
+            .WithMessage("The city must not be empty.")
+            .MaximumLength(100).WithMessage("The city must not exceed 100 characters.");
     }
 }

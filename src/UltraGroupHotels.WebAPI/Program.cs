@@ -1,6 +1,7 @@
 using UltraGroupHotels.Application.Implementations;
 using UltraGroupHotels.Infrastructure;
 using UltraGroupHotels.WebAPI;
+using UltraGroupHotels.WebAPI.Common.http;
 using UltraGroupHotels.WebAPI.Extensions;
 using UltraGroupHotels.WebAPI.Middlewares;
 
@@ -13,7 +14,6 @@ builder.Services.AddPresentation(builder.Configuration)
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 if (app.Environment.IsDevelopment())
@@ -21,6 +21,7 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigration();
 }
 
+app.UseCustomStatusCodePages();
 
 app.UseExceptionHandler("/error");
 

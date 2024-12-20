@@ -1,3 +1,3 @@
 ﻿namespace UltraGroupHotels.WebAPI.Controllers.Rooms;
 
-public record GetAvailableRoomsRequest(DateOnly StartDate, DateOnly EndDate, int NumberOfGuests);
+public record GetAvailableRoomsRequest(DateOnly StartDate, DateOnly EndDate, int NumberOfGuests, string City);

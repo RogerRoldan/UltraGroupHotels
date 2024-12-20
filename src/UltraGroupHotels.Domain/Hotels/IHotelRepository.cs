@@ -8,4 +8,5 @@ public interface IHotelRepository
     void Add(Hotel hotel);
     void Update(Hotel hotel);
     void Delete(Hotel hotel);
+    Task<List<Hotel>> GetHotelByCityAsync(string city, CancellationToken cancellationToken = default);
 }
