@@ -7,7 +7,7 @@ using UltraGroupHotels.Domain.Rooms;
 
 namespace UltraGroupHotels.Application.Rooms.GetAvailableRoomsForDatesAndGuests;
 
-public class GetAvailableRoomsForDatesAndGuestsHandler : IRequestHandler<GetAvailableRoomsForDatesAndGuestsQuery, ErrorOr<List<RoomResponse>>>
+public class GetAvailableRoomsForDatesAndGuestsHandler : IRequestHandler<GetAvailableRoomsForDatesAndGuestsQuery, ErrorOr<List<RoomAvailableResponse>>>
 {
 
     private readonly IRoomRepository _roomRepository;
@@ -23,7 +23,7 @@ public class GetAvailableRoomsForDatesAndGuestsHandler : IRequestHandler<GetAvai
         _hotelRepository = hotelRepository;
     }
 
-    public async Task<ErrorOr<List<RoomResponse>>> Handle(GetAvailableRoomsForDatesAndGuestsQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<List<RoomAvailableResponse>>> Handle(GetAvailableRoomsForDatesAndGuestsQuery request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetHotelByCityAsync(request.City, cancellationToken);
         var hotelsActiveCity = hotel.Where(hotel => hotel.IsActive).ToList();
@@ -40,16 +40,26 @@ public class GetAvailableRoomsForDatesAndGuestsHandler : IRequestHandler<GetAvai
                                         .Where(room =>
                                         !bookings.Any(booking => booking.RoomId == room.Id)).ToList();
 
-        var roomsAvailableResponse = roomsAvailable.Select(
-                                                    room => new RoomResponse(room.Id,
-                                                                             room.HotelId,
-                                                                             room.RoomNumber,
-                                                                             room.QuantityGuests,
-                                                                             room.RoomType.Value,
-                                                                             room.BaseCost.Amount, room.BaseCost.Currency.Code,
-                                                                             room.Taxes.Value,
-                                                                             room.IsActive,
-                                                                             room.CreatedAt)).ToList();
+        var roomsAvailableResponse = roomsAvailable
+            .Where(room => hotelsActiveCity.Any(hotel => hotel.Id == room.HotelId))
+            .Select(room =>
+            {
+                var hotelInfo = hotelsActiveCity.First(hotel => hotel.Id == room.HotelId);
+                return new RoomAvailableResponse(
+                    room.Id,
+                    room.HotelId,
+                    hotelInfo.Name,
+                    room.RoomNumber,
+                    room.QuantityGuests,
+                    room.RoomType.Value,
+                    room.BaseCost.Amount,
+                    room.BaseCost.Currency.Code,
+                    room.Taxes.Value,
+                    room.IsActive,
+                    room.CreatedAt
+                );
+            })
+            .ToList();
 
         return roomsAvailableResponse;
     }

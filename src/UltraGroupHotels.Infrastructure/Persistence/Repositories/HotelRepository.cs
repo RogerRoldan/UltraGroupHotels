@@ -43,9 +43,13 @@ public class HotelRepository : IHotelRepository
         return hotel;
     }
 
-    public Task<List<Hotel>> GetHotelByCityAsync(string city, CancellationToken cancellationToken = default)
+    public async Task<List<Hotel>> GetHotelByCityAsync(string city, CancellationToken cancellationToken = default)
     {
-        var hotels = _context.Hotels.Where(h => h.Address.City == city).ToListAsync(cancellationToken);
+        var hotels = await _context.Hotels
+            .Where(h => h.Address.City != null &&
+                        h.Address.City.ToLower() == city.ToLower())
+            .ToListAsync(cancellationToken);
+
 
         return hotels;
     }
