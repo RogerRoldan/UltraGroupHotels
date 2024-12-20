@@ -7,6 +7,10 @@ public class GetAvailableRoomsForDatesAndGuestsQueryValidator : AbstractValidato
     public GetAvailableRoomsForDatesAndGuestsQueryValidator()
     {
         RuleFor(x => x.StartDate)
+            .NotNull()
+            .WithMessage("The start date must be provided.")
+            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now))
+            .WithMessage("The start date must be greater than or equal to the current date.")
             .LessThanOrEqualTo(x => x.EndDate)
             .WithMessage("The start date must be less than or equal to the end date.");
 
